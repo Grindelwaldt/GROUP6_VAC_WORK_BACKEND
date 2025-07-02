@@ -144,7 +144,7 @@ io.on("connection", (socket) => {
       io.emit("Update-Score", {id: data.id, team1_points: lobbies[data.id].team1_points, team2_points: lobbies[data.id].team2_points})
       socket.emit("Increase-Player-Points", data.damage);
     } else if(lobbies[data.id].flag_shot(data.number) > 0) {
-      if (flag_captured(data.player_id, lobbies[data.id].flag_shot(data.number))) {
+      if (lobbies[data.id].flag_captured(data.player_id, lobbies[data.id].flag_shot(data.number))) {
         socket.emit("Heal-Player",100);
         console.log("healing player");
       }
