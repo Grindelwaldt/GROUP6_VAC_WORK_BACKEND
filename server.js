@@ -106,17 +106,21 @@ io.on("connection", (socket) => {
   socket.on("Get-Existing-Lobbies", () => {
     let temp_lobbies = [];
     for (let index = 0; index < lobbies.length; index++) {
-      temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+      if (!lobbies[index].game_live) {
+        temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+      }
     }
     socket.emit("Lobbies-List",temp_lobbies);
   });
 
-  socket.on("Get-Existing-Lobbies", () => {
+  socket.on("Get-Existing-Spectator-Lobbies", () => {
     let temp_lobbies = [];
     for (let index = 0; index < lobbies.length; index++) {
-      temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+      if (lobbies[index].game_live) {
+        temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+      }
     }
-    socket.emit("Lobbies-List",temp_lobbies);
+    socket.emit("Spectator-Lobbies-List",temp_lobbies);
   });
 
   socket.on("Player-ready", (data) => {
@@ -127,6 +131,20 @@ io.on("connection", (socket) => {
     lobbies[data.id].set_player_ready(data.player_id, true);
     
     if(lobbies[data.id].start_game()) {
+      let temp_lobbies = [];
+      for (let index = 0; index < lobbies.length; index++) {
+        if (!lobbies[index].game_live) {
+          temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+        }
+      }
+      io.emit("Lobbies-List",temp_lobbies);
+      temp_lobbies = [];
+      for (let index = 0; index < lobbies.length; index++) {
+        if (lobbies[index].game_live) {
+          temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+        }
+      }
+      io.emit("Spectator-Lobbies-List",temp_lobbies);
       io.emit("Start-Game", data.id)
     }
   });
@@ -149,6 +167,7 @@ io.on("connection", (socket) => {
         console.log("healing player");
       } else {
         io.emit("Update-Score", {id: data.id, team1_points: lobbies[data.id].team1_points, team2_points: lobbies[data.id].team2_points})
+        socket.emit("Increase-Player-Points", 100);
       }
     }
   });

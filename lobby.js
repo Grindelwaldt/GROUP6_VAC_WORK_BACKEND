@@ -8,6 +8,7 @@ export class Lobby {
     this.lobby_ID = lobby_ID;
     this.total_players = 0;
     this.game_start_time = 0;
+    this.game_live = false;
     this.team1_flag_id = 1;
     this.team2_flag_id = 2;
   }
@@ -206,6 +207,7 @@ export class Lobby {
     }
 
     this.start_time = Date.now(); // timestamp in ms since epoch :contentReference[oaicite:1]{index=1}
+    this.game_live = true;
     console.warn("!!!Game started");
     return true;
   }
