@@ -147,6 +147,8 @@ io.on("connection", (socket) => {
       if (lobbies[data.id].flag_captured(data.player_id, lobbies[data.id].flag_shot(data.number))) {
         socket.emit("Heal-Player",100);
         console.log("healing player");
+      } else {
+        io.emit("Update-Score", {id: data.id, team1_points: lobbies[data.id].team1_points, team2_points: lobbies[data.id].team2_points})
       }
     }
   });
