@@ -8,6 +8,8 @@ export class Lobby {
     this.lobby_ID = lobby_ID;
     this.total_players = 0;
     this.game_start_time = 0;
+    this.team1_flag_id = 1;
+    this.team2_flag_id = 2;
   }
 
   add_player(Player_ID, player_number) {
@@ -81,17 +83,17 @@ export class Lobby {
             console.warn(`Invalid capture: player ${Player_ID} not on a team`);
             return false;
         }
-        if (capturerTeam === team) {
+        if (capturerTeam == team) {
             console.warn(`Invalid capture: player ${Player_ID} is on team ${team}`);
-            return false;
+            return true; //heal
         }
-        if (team === 2) {
+        if (team == 2) {
             this.team1_points += 200;
         } else {
             this.team2_points += 200;
         }
         console.warn(`Player ${Player_ID} captured flag of team ${team}`);
-        return true;
+        return false;
     }
 
     player_shot(Player_ID, target_player_number) {
@@ -131,6 +133,13 @@ export class Lobby {
         }
         console.warn(`Player ${Player_ID} shot${target_player_number}`);
         return true;
+    }
+
+    flag_shot(target_player_number) {
+      if (target_player_number == this.team1_flag_id || target_player_number == this.team2_flag_id) {
+        return true;
+      }
+      return false;
     }
 
     get_player_id_from_player_number(target_player_number) {
