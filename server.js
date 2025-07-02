@@ -13,7 +13,7 @@ app.use(cors({
   methods: ["GET", "POST"],
   credentials: true
 }));
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
     // origin: "https://group-6-vac-work.vercel.app", // Next.js runs on 3000 by default
@@ -188,7 +188,7 @@ io.on("connection", (socket) => {
 
 });
 
-server.listen(4000, '0.0.0.0', () => {
+httpServer.listen(4000, () => {
   console.log("Socket.IO server listening on http://192.168.46.56:4000");
 });
 
