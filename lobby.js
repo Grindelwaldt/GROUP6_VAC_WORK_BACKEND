@@ -136,10 +136,12 @@ export class Lobby {
     }
 
     flag_shot(target_player_number) {
-      if (target_player_number == this.team1_flag_id || target_player_number == this.team2_flag_id) {
-        return true;
+      if (target_player_number == this.team1_flag_id) {
+        return 1;
+      } else if (target_player_number == this.team2_flag_id) {
+        return 2
       }
-      return false;
+      return 0;
     }
 
     get_player_id_from_player_number(target_player_number) {
