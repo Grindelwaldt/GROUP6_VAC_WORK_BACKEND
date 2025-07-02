@@ -14,12 +14,12 @@ app.use(cors({
   credentials: true
 }));
 const server = http.createServer(app);
-const io = new Server(server, {
+const io = new Server(httpServer, {
   cors: {
     // origin: "https://group-6-vac-work.vercel.app", // Next.js runs on 3000 by default
-    origin: ["https://group-6-vac-work-git-main-grindelwaldts-projects.vercel.app/", "https://group-6-vac-work-ew0scdpwt-grindelwaldts-projects.vercel.app/"], // Next.js runs on 3000 by default
+    origin: "https://group-6-vac-work-git-main-grindelwaldts-projects.vercel.app", // Next.js runs on 3000 by default
     methods: ["GET", "POST"],
-    credentials: true
+    // credentials: true
   }
 });
 
