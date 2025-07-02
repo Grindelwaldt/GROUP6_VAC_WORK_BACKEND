@@ -123,6 +123,14 @@ io.on("connection", (socket) => {
     socket.emit("Spectator-Lobbies-List",temp_lobbies);
   });
 
+  socket.on("Get-Lobby-Info", (data) => {
+    if (lobbies.length <= data) {
+      console.log(lobbies.length + ", " + data);
+      return; //add stuff
+    }
+    socket.emit("Lobby-Info", {team1_points: lobbies[data].team1_points,team2_points: lobbies[data].team2_points,team1_players: lobbies[data].team1,team2_players: lobbies[data].team2});
+  });
+
   socket.on("Player-ready", (data) => {
     if (lobbies.length <= data.id) {
       console.log(lobbies.length + ", " + data.id);
