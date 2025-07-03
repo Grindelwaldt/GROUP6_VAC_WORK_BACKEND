@@ -17,7 +17,7 @@ export class Lobby {
 
   add_player(Player_ID, player_number) {
     if (this.players[Player_ID]) return false; // already in lobby
-    const player = { id: Player_ID, number: player_number, b_player_ready : false };
+    const player = { id: Player_ID, number: player_number, b_player_ready : false, b_player_alive : true };
     this.players[Player_ID] = player;
     this.total_players++;
     return true;
@@ -88,6 +88,7 @@ export class Lobby {
         }
         if (capturerTeam == team) {
             console.warn(`Invalid capture: player ${Player_ID} is on team ${team}`);
+            this.players[Player_ID].b_player_alive = true;
             return true; //heal
         }
         if (team == 2) {
@@ -104,6 +105,10 @@ export class Lobby {
         if (!shooter) {
         console.warn(`Shooter ${Player_ID} not found`);
         return false;
+        }
+
+        if (shooter.b_player_alive) {
+          return false;
         }
 
         // find target by number
@@ -150,6 +155,7 @@ export class Lobby {
     heal_shot(target_player_number) {
       console.log("Heal shot " + target_player_number + " " + this.heal_shot)
       if (target_player_number == this.heal_id) {
+        this.players[Player_ID].b_player_alive = true;
         return true;
       }
       return false;
@@ -178,6 +184,7 @@ export class Lobby {
         console.warn("Player not in team")
         return false;
     };
+    this.players[Player_ID].b_player_alive = flase;
 
     if (team === 1) {
         console.warn("team 2 got points")
