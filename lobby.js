@@ -91,6 +91,9 @@ export class Lobby {
             this.players[Player_ID].b_player_alive = true;
             return true; //heal
         }
+        if (!this.players[Player_ID].b_player_alive) {
+          return false;
+        }
         if (team == 2) {
             this.team1_points += 200;
         } else {
