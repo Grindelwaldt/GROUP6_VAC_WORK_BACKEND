@@ -184,7 +184,7 @@ export class Lobby {
         console.warn("Player not in team")
         return false;
     };
-    this.players[Player_ID].b_player_alive = flase;
+    this.players[Player_ID].b_player_alive = false;
 
     if (team === 1) {
         console.warn("team 2 got points")
