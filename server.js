@@ -59,6 +59,7 @@ io.on("connection", (socket) => {
     lobbies.push(new Lobby(lobby_id))
     socket.emit("Lobby-Created", lobby_id)
     console.log("lobby created")
+    io.emit("Lobbies-List",temp_lobbies);
   });
 
   socket.on("Request-To-Join-Lobby", (data) => {
@@ -69,7 +70,8 @@ io.on("connection", (socket) => {
     }
     if (lobbies[data.id].add_player(data.player_id, data.player_number))
     {
-      socket.emit("Player-Added-To-Lobby")
+      socket.emit("Player-Added-To-Lobby");
+      io.emit("Lobbies-List",temp_lobbies);
     }
     // add stuff (socket that handels if player did not join lobby)
   });
@@ -107,7 +109,7 @@ io.on("connection", (socket) => {
     let temp_lobbies = [];
     for (let index = 0; index < lobbies.length; index++) {
       if (!lobbies[index].game_live) {
-        temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+        temp_lobbies.push({id: index, lobbyName: lobbies[index].name, players_length: lobbies[index].total_players})  
       }
     }
     socket.emit("Lobbies-List",temp_lobbies);
@@ -117,7 +119,7 @@ io.on("connection", (socket) => {
     let temp_lobbies = [];
     for (let index = 0; index < lobbies.length; index++) {
       if (lobbies[index].game_live) {
-        temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+        temp_lobbies.push({id: index, lobbyName: lobbies[index].name, players_length: lobbies[index].total_players})  
       }
     }
     socket.emit("Spectator-Lobbies-List",temp_lobbies);
@@ -142,14 +144,14 @@ io.on("connection", (socket) => {
       let temp_lobbies = [];
       for (let index = 0; index < lobbies.length; index++) {
         if (!lobbies[index].game_live) {
-          temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+          temp_lobbies.push({id: index, lobbyName: lobbies[index].name, players_length: lobbies[index].total_players})  
         }
       }
       io.emit("Lobbies-List",temp_lobbies);
       temp_lobbies = [];
       for (let index = 0; index < lobbies.length; index++) {
         if (lobbies[index].game_live) {
-          temp_lobbies.push({id: index, lobbyName: "temp_name", players_length: lobbies[index].total_players})  
+          temp_lobbies.push({id: index, lobbyName: lobbies[index].name, players_length: lobbies[index].total_players})  
         }
       }
       io.emit("Spectator-Lobbies-List",temp_lobbies);
@@ -177,7 +179,13 @@ io.on("connection", (socket) => {
         io.emit("Update-Score", {id: data.id, team1_points: lobbies[data.id].team1_points, team2_points: lobbies[data.id].team2_points})
         socket.emit("Increase-Player-Points", 100);
       }
+    } else if(lobbies[data.id].heal_shot(data.number)) {
+      socket.emit("Heal-Player",33);
     }
+    if (lobbies[data.id].check_end_conditions()) {
+      io.emit("Game-Finished",{id: data.id, winning_team: lobbies[data.id].end_game()});
+    }
+
   });
 
   socket.on("Player-Died", (data) => {

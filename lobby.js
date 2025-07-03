@@ -11,6 +11,8 @@ export class Lobby {
     this.game_live = false;
     this.team1_flag_id = 1;
     this.team2_flag_id = 2;
+    this.heal_id = 3;
+    this.name = "Game " + lobby_ID;
   }
 
   add_player(Player_ID, player_number) {
@@ -145,6 +147,13 @@ export class Lobby {
       return 0;
     }
 
+    heal_shot(target_player_number) {
+      if (target_player_number == this.heal_shot) {
+        return true;
+      }
+      return false;
+    }
+
     get_player_id_from_player_number(target_player_number) {
     // Iterate over all players
     const targetEntry = Object.values(this.players)
@@ -238,7 +247,7 @@ export class Lobby {
         return 2;
     }
     console.warn("its a draw")
-    return 0;
+    return 1;
   }
 
 
