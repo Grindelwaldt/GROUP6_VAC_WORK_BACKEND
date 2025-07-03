@@ -192,7 +192,7 @@ io.on("connection", (socket) => {
         io.emit("Update-Score", {id: data.id, team1_points: lobbies[data.id].team1_points, team2_points: lobbies[data.id].team2_points})
         socket.emit("Increase-Player-Points", 100);
       }
-    } else if(lobbies[data.id].heal_shot(data.number)) {
+    } else if(lobbies[data.id].heal_shot(data.player_id,data.number)) {
       socket.emit("Heal-Player",33);
     }
     if (lobbies[data.id].check_end_conditions()) {

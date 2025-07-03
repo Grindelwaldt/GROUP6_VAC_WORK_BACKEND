@@ -155,7 +155,7 @@ export class Lobby {
       return 0;
     }
 
-    heal_shot(target_player_number) {
+    heal_shot(Player_ID,target_player_number) {
       console.log("Heal shot " + target_player_number + " " + this.heal_shot)
       if (target_player_number == this.heal_id) {
         this.players[Player_ID].b_player_alive = true;
