@@ -149,7 +149,7 @@ export class Lobby {
 
     heal_shot(target_player_number) {
       console.log("Heal shot " + target_player_number + " " + this.heal_shot)
-      if (target_player_number == this.heal_shot) {
+      if (target_player_number == this.heal_id) {
         return true;
       }
       return false;
