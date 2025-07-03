@@ -84,15 +84,15 @@ export class Lobby {
         const capturerTeam = (this.team1[Player_ID] ? 1 : this.team2[Player_ID] ? 2 : null);
         if (capturerTeam === null) {
             console.warn(`Invalid capture: player ${Player_ID} not on a team`);
-            return false;
+            return 0;
         }
         if (capturerTeam == team) {
             console.warn(`Invalid capture: player ${Player_ID} is on team ${team}`);
             this.players[Player_ID].b_player_alive = true;
-            return true; //heal
+            return 1; //heal
         }
         if (!this.players[Player_ID].b_player_alive) {
-          return false;
+          return 0;
         }
         if (team == 2) {
             this.team1_points += 200;
@@ -100,7 +100,7 @@ export class Lobby {
             this.team2_points += 200;
         }
         console.warn(`Player ${Player_ID} captured flag of team ${team}`);
-        return false;
+        return 2;
     }
 
     player_shot(Player_ID, target_player_number) {
