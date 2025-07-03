@@ -59,6 +59,12 @@ io.on("connection", (socket) => {
     lobbies.push(new Lobby(lobby_id))
     socket.emit("Lobby-Created", lobby_id)
     console.log("lobby created")
+    let temp_lobbies = [];
+    for (let index = 0; index < lobbies.length; index++) {
+      if (!lobbies[index].game_live) {
+        temp_lobbies.push({id: index, lobbyName: lobbies[index].name, players_length: lobbies[index].total_players})  
+      }
+    }
     io.emit("Lobbies-List",temp_lobbies);
   });
 
@@ -71,6 +77,12 @@ io.on("connection", (socket) => {
     if (lobbies[data.id].add_player(data.player_id, data.player_number))
     {
       socket.emit("Player-Added-To-Lobby");
+      let temp_lobbies = [];
+      for (let index = 0; index < lobbies.length; index++) {
+        if (!lobbies[index].game_live) {
+          temp_lobbies.push({id: index, lobbyName: lobbies[index].name, players_length: lobbies[index].total_players})  
+        }
+      }
       io.emit("Lobbies-List",temp_lobbies);
     }
     // add stuff (socket that handels if player did not join lobby)
