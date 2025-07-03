@@ -107,7 +107,7 @@ export class Lobby {
         return false;
         }
 
-        if (shooter.b_player_alive) {
+        if (!shooter.b_player_alive) {
           return false;
         }
 
